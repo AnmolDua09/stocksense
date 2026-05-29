@@ -23,3 +23,7 @@ A full-stack SaaS application for real-time stock market analytics, ML-powered p
 | Deployment | Vercel (frontend), Railway (backend + ML) |
 
 ## 🏗️ Architecture
+stocksense/
+├── client/     # React + Vite frontend
+├── server/     # Node.js Express REST API + WebSocket
+└── ml/         # Python FastAPI ML microservice
