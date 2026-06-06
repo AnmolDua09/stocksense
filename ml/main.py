@@ -1,10 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from routers import sentiment
+from dotenv import load_dotenv
 import yfinance as yf
 import pandas as pd
 from prophet import Prophet
 import warnings
+import logging
+import os
+
+load_dotenv()
 warnings.filterwarnings('ignore')
+logging.getLogger('prophet').setLevel(logging.ERROR)
 
 app = FastAPI(title="StockSense ML Service")
 
@@ -14,6 +21,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(sentiment.router)
 
 @app.get("/health")
 def health():
@@ -58,22 +67,17 @@ def predict(symbol: str):
         df = df.reset_index()[['Date', 'Close']]
         df.columns = ['ds', 'y']
         df['ds'] = pd.to_datetime(df['ds']).dt.tz_localize(None)
-
         model = Prophet(daily_seasonality=False, weekly_seasonality=True)
         model.fit(df)
-
         future = model.make_future_dataframe(periods=7)
         forecast = model.predict(future)
-
         next7 = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(7)
         next7['ds'] = next7['ds'].astype(str)
         next7 = next7.round(2)
-
         last_price = df['y'].iloc[-1]
         predicted_price = next7['yhat'].iloc[-1]
         signal = "bullish" if predicted_price > last_price else "bearish"
         change_pct = round(((predicted_price - last_price) / last_price) * 100, 2)
-
         return {
             "symbol": symbol.upper(),
             "signal": signal,
@@ -84,6 +88,3 @@ def predict(symbol: str):
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-import logging
-logging.getLogger('prophet').setLevel(logging.ERROR)

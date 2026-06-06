@@ -1,3 +1,4 @@
+import Sentiment from '../components/Sentiment'
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '../store/authStore'
 import api from '../api/axios'
@@ -87,7 +88,7 @@ export default function Dashboard() {
 
           {/* Tabs */}
           <div style={styles.tabs}>
-            {['chart','predict','trade','portfolio'].map(t => (
+            {['chart','predict','sentiment','trade','portfolio'].map(t => (
               <button key={t} style={{...styles.tab, ...(tab===t ? styles.tabActive : {})}}
                 onClick={() => setTab(t)}>
                 {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -101,6 +102,7 @@ export default function Dashboard() {
             {tab === 'predict' && <Prediction symbol={selected} />}
             {tab === 'trade' && <TradePanel symbol={selected} quote={quote} onTrade={refreshBalance} />}
             {tab === 'portfolio' && <Portfolio onRefresh={refreshBalance} />}
+            {tab === 'sentiment' && <Sentiment symbol={selected} />}
           </div>
         </div>
       </div>
