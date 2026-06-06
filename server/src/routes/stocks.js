@@ -47,3 +47,16 @@ router.get('/predict/:symbol', protect, async (req, res) => {
 })
 
 export default router
+
+router.get('/sentiment/:symbol', protect, async (req, res) => {
+  try {
+    const { symbol } = req.params
+    const cached = await redis.get(`sentiment:${symbol}`)
+    if (cached) return res.json(JSON.parse(cached))
+    const { data } = await axios.get(`${ML_URL}/sentiment/${symbol}`)
+    await redis.setex(`sentiment:${symbol}`, 1800, JSON.stringify(data))
+    res.json(data)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
