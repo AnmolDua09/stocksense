@@ -14,11 +14,17 @@ import { initSocket } from './socket/priceSocket.js'
 dotenv.config()
 const app = express()
 const server = http.createServer(app)
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://stocksense-seven-zeta.vercel.app'
+]
+
 const io = new Server(server, {
-  cors: { origin: '*', methods: ['GET', 'POST'] }
+  cors: { origin: allowedOrigins, methods: ['GET', 'POST'] }
 })
 
-app.use(cors())
+app.use(cors({ origin: allowedOrigins }))
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
@@ -33,6 +39,6 @@ initSocket(io)
 const start = async () => {
   await connectDB()
   await connectRedis()
-  server.listen(process.env.PORT || 5001, () => console.log(`Server running on port ${process.env.PORT || 5001}`))
+  server.listen(process.env.PORT || 3000, () => console.log(`Server running on port ${process.env.PORT || 3000}`))
 }
 start()
