@@ -23,40 +23,40 @@ export default function TradePanel({ symbol, quote, onTrade }) {
 
   return (
     <div style={{ maxWidth: 420 }}>
-      <h3 style={{ color: '#f1f5f9', marginBottom: 20, fontSize: 16 }}>Virtual Trade — {symbol}</h3>
+      <h3 style={{ color: '#0C447C', marginBottom: 20, fontSize: 16 }}>Virtual Trade — {symbol}</h3>
       {msg && (
-        <div style={{ background: msg.type === 'success' ? '#0f2d1a' : '#2d1515',
-          border: `1px solid ${msg.type === 'success' ? '#166534' : '#7f1d1d'}`,
-          color: msg.type === 'success' ? '#86efac' : '#fca5a5',
+        <div style={{ background: msg.type === 'success' ? '#EAF3DE' : '#FCEBEB',
+          border: `1px solid ${msg.type === 'success' ? '#97C459' : '#F09595'}`,
+          color: msg.type === 'success' ? '#3B6D11' : '#A32D2D',
           padding: '12px 16px', borderRadius: 8, marginBottom: 16, fontSize: 14 }}>
           {msg.text}
         </div>
       )}
-      <div style={{ background: '#0d0d1a', border: '1px solid #1e1e3a', borderRadius: 10, padding: 20, marginBottom: 16 }}>
+      <div style={{ background: '#F0F7FF', border: '1px solid #D6E8FB', borderRadius: 10, padding: 20, marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-          <span style={{ color: '#64748b', fontSize: 14 }}>Current Price</span>
-          <span style={{ color: '#6366f1', fontWeight: 600 }}>${quote?.price || '...'}</span>
+          <span style={{ color: '#5F5E5A', fontSize: 14 }}>Current Price</span>
+          <span style={{ color: '#378ADD', fontWeight: 600 }}>${quote?.price || '...'}</span>
         </div>
         <div style={{ marginBottom: 16 }}>
-          <label style={{ color: '#64748b', fontSize: 13, display: 'block', marginBottom: 8 }}>Quantity</label>
+          <label style={{ color: '#5F5E5A', fontSize: 13, display: 'block', marginBottom: 8 }}>Quantity</label>
           <input type="number" min="1" value={quantity}
             onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-            style={{ width: '100%', background: '#13131f', border: '1px solid #1e1e3a', borderRadius: 8,
-              padding: '10px 14px', color: '#e2e8f0', fontSize: 15, outline: 'none' }} />
+            style={{ width: '100%', background: '#fff', border: '1px solid #D6E8FB', borderRadius: 8,
+              padding: '10px 14px', color: '#2C2C2A', fontSize: 15, outline: 'none' }} />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '1px solid #1e1e3a' }}>
-          <span style={{ color: '#94a3b8', fontSize: 14 }}>Total Value</span>
-          <span style={{ color: '#f1f5f9', fontWeight: 700, fontSize: 16 }}>${total}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '1px solid #D6E8FB' }}>
+          <span style={{ color: '#5F5E5A', fontSize: 14 }}>Total Value</span>
+          <span style={{ color: '#0C447C', fontWeight: 700, fontSize: 16 }}>${total}</span>
         </div>
       </div>
       <div style={{ display: 'flex', gap: 12 }}>
         <button onClick={() => trade('buy')} disabled={loading}
-          style={{ flex: 1, background: '#166534', border: '1px solid #15803d', color: '#86efac',
+          style={{ flex: 1, background: '#EAF3DE', border: '1px solid #97C459', color: '#3B6D11',
             borderRadius: 8, padding: '13px', fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
           {loading ? '...' : '▲ Buy'}
         </button>
         <button onClick={() => trade('sell')} disabled={loading}
-          style={{ flex: 1, background: '#7f1d1d', border: '1px solid #991b1b', color: '#fca5a5',
+          style={{ flex: 1, background: '#FCEBEB', border: '1px solid #F09595', color: '#A32D2D',
             borderRadius: 8, padding: '13px', fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
           {loading ? '...' : '▼ Sell'}
         </button>

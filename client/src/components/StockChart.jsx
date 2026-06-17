@@ -26,31 +26,31 @@ export default function StockChart({ symbol }) {
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         {PERIODS.map(p => (
           <button key={p} onClick={() => setPeriod(p)}
-            style={{ padding: '5px 14px', borderRadius: 6, border: '1px solid #1e1e3a',
-              background: period === p ? '#6366f1' : 'transparent',
-              color: period === p ? '#fff' : '#64748b', cursor: 'pointer', fontSize: 13 }}>
+            style={{ padding: '6px 16px', borderRadius: 8, border: '1px solid #D6E8FB',
+              background: period === p ? '#378ADD' : '#fff',
+              color: period === p ? '#fff' : '#5F5E5A', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>
             {p}
           </button>
         ))}
       </div>
-      {loading ? <div style={{ color: '#64748b', textAlign: 'center', padding: 60 }}>Loading chart...</div> : (
+      {loading ? <div style={{ color: '#888780', textAlign: 'center', padding: 60 }}>Loading chart...</div> : (
         <ResponsiveContainer width="100%" height={320}>
           <AreaChart data={data}>
             <defs>
               <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#378ADD" stopOpacity={0.25}/>
+                <stop offset="95%" stopColor="#378ADD" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e1e3a" />
-            <XAxis dataKey="date" tick={{ fill: '#475569', fontSize: 11 }} tickLine={false}
-              interval={Math.floor(data.length / 6)} />
-            <YAxis tick={{ fill: '#475569', fontSize: 11 }} tickLine={false}
+            <CartesianGrid strokeDasharray="3 3" stroke="#E8F1FC" />
+            <XAxis dataKey="date" tick={{ fill: '#888780', fontSize: 11 }} tickLine={false}
+              interval={Math.floor(data.length / 6)} axisLine={{ stroke: '#D6E8FB' }} />
+            <YAxis tick={{ fill: '#888780', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#D6E8FB' }}
               domain={['auto', 'auto']} tickFormatter={v => `$${v}`} width={65} />
-            <Tooltip contentStyle={{ background: '#13131f', border: '1px solid #1e1e3a', borderRadius: 8 }}
-              labelStyle={{ color: '#94a3b8' }} itemStyle={{ color: '#6366f1' }}
+            <Tooltip contentStyle={{ background: '#fff', border: '1px solid #D6E8FB', borderRadius: 8 }}
+              labelStyle={{ color: '#5F5E5A' }} itemStyle={{ color: '#378ADD' }}
               formatter={v => [`$${v.toFixed(2)}`, 'Price']} />
-            <Area type="monotone" dataKey="price" stroke="#6366f1" strokeWidth={2} fill="url(#grad)" />
+            <Area type="monotone" dataKey="price" stroke="#378ADD" strokeWidth={2.5} fill="url(#grad)" />
           </AreaChart>
         </ResponsiveContainer>
       )}

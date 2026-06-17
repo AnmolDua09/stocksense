@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import api from '../api/axios'
 
 export default function Prediction({ symbol }) {
@@ -18,7 +18,7 @@ export default function Prediction({ symbol }) {
     fetch()
   }, [symbol])
 
-  if (loading) return <div style={{ color: '#64748b', textAlign: 'center', padding: 60 }}>Running ML prediction... (~10s)</div>
+  if (loading) return <div style={{ color: '#888780', textAlign: 'center', padding: 60 }}>Running ML prediction... (~10s)</div>
   if (!data) return null
 
   const chartData = data.forecast.map(d => ({
@@ -29,45 +29,47 @@ export default function Prediction({ symbol }) {
   }))
 
   const isBullish = data.signal === 'bullish'
+  const accent = isBullish ? '#3B6D11' : '#A32D2D'
+  const accentBg = isBullish ? '#EAF3DE' : '#FCEBEB'
 
   return (
     <div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
-        <div style={{ background: '#0d0d1a', border: '1px solid #1e1e3a', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
-          <p style={{ color: '#64748b', fontSize: 12, marginBottom: 6 }}>Signal</p>
-          <p style={{ fontSize: 22, fontWeight: 700, color: isBullish ? '#22c55e' : '#ef4444' }}>
+        <div style={{ background: accentBg, border: `1px solid ${accent}33`, borderRadius: 10, padding: '16px 20px', flex: 1 }}>
+          <p style={{ color: '#5F5E5A', fontSize: 12, marginBottom: 6 }}>Signal</p>
+          <p style={{ fontSize: 22, fontWeight: 700, color: accent }}>
             {isBullish ? '▲ Bullish' : '▼ Bearish'}
           </p>
         </div>
-        <div style={{ background: '#0d0d1a', border: '1px solid #1e1e3a', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
-          <p style={{ color: '#64748b', fontSize: 12, marginBottom: 6 }}>Current Price</p>
-          <p style={{ fontSize: 22, fontWeight: 700, color: '#f1f5f9' }}>${data.current_price}</p>
+        <div style={{ background: '#F0F7FF', border: '1px solid #D6E8FB', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
+          <p style={{ color: '#5F5E5A', fontSize: 12, marginBottom: 6 }}>Current Price</p>
+          <p style={{ fontSize: 22, fontWeight: 700, color: '#0C447C' }}>${data.current_price}</p>
         </div>
-        <div style={{ background: '#0d0d1a', border: '1px solid #1e1e3a', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
-          <p style={{ color: '#64748b', fontSize: 12, marginBottom: 6 }}>7-Day Prediction</p>
-          <p style={{ fontSize: 22, fontWeight: 700, color: '#6366f1' }}>${data.predicted_price}</p>
+        <div style={{ background: '#F0F7FF', border: '1px solid #D6E8FB', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
+          <p style={{ color: '#5F5E5A', fontSize: 12, marginBottom: 6 }}>7-Day Prediction</p>
+          <p style={{ fontSize: 22, fontWeight: 700, color: '#378ADD' }}>${data.predicted_price}</p>
         </div>
-        <div style={{ background: '#0d0d1a', border: '1px solid #1e1e3a', borderRadius: 10, padding: '16px 20px', flex: 1 }}>
-          <p style={{ color: '#64748b', fontSize: 12, marginBottom: 6 }}>Expected Change</p>
-          <p style={{ fontSize: 22, fontWeight: 700, color: isBullish ? '#22c55e' : '#ef4444' }}>
+        <div style={{ background: accentBg, border: `1px solid ${accent}33`, borderRadius: 10, padding: '16px 20px', flex: 1 }}>
+          <p style={{ color: '#5F5E5A', fontSize: 12, marginBottom: 6 }}>Expected Change</p>
+          <p style={{ fontSize: 22, fontWeight: 700, color: accent }}>
             {data.change_pct > 0 ? '+' : ''}{data.change_pct}%
           </p>
         </div>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e1e3a" />
-          <XAxis dataKey="date" tick={{ fill: '#475569', fontSize: 11 }} tickLine={false} />
-          <YAxis tick={{ fill: '#475569', fontSize: 11 }} tickLine={false}
+          <CartesianGrid strokeDasharray="3 3" stroke="#E8F1FC" />
+          <XAxis dataKey="date" tick={{ fill: '#888780', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#D6E8FB' }} />
+          <YAxis tick={{ fill: '#888780', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#D6E8FB' }}
             domain={['auto', 'auto']} tickFormatter={v => `$${v}`} width={65} />
-          <Tooltip contentStyle={{ background: '#13131f', border: '1px solid #1e1e3a', borderRadius: 8 }}
-            labelStyle={{ color: '#94a3b8' }} />
-          <Line type="monotone" dataKey="predicted" stroke="#6366f1" strokeWidth={2} dot={{ fill: '#6366f1', r: 4 }} name="Predicted" />
-          <Line type="monotone" dataKey="high" stroke="#22c55e" strokeWidth={1} strokeDasharray="4 4" dot={false} name="Upper" />
-          <Line type="monotone" dataKey="low" stroke="#ef4444" strokeWidth={1} strokeDasharray="4 4" dot={false} name="Lower" />
+          <Tooltip contentStyle={{ background: '#fff', border: '1px solid #D6E8FB', borderRadius: 8 }}
+            labelStyle={{ color: '#5F5E5A' }} />
+          <Line type="monotone" dataKey="predicted" stroke="#378ADD" strokeWidth={2.5} dot={{ fill: '#378ADD', r: 4 }} name="Predicted" />
+          <Line type="monotone" dataKey="high" stroke="#639922" strokeWidth={1.5} strokeDasharray="4 4" dot={false} name="Upper" />
+          <Line type="monotone" dataKey="low" stroke="#E24B4A" strokeWidth={1.5} strokeDasharray="4 4" dot={false} name="Lower" />
         </LineChart>
       </ResponsiveContainer>
-      <p style={{ color: '#475569', fontSize: 12, marginTop: 12, textAlign: 'center' }}>
+      <p style={{ color: '#888780', fontSize: 12, marginTop: 12, textAlign: 'center' }}>
         Powered by Facebook Prophet · Trained on 6 months of historical data · Not financial advice
       </p>
     </div>
