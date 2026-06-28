@@ -1,17 +1,24 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-let resend = null
+let transporter = null
 
-const getResend = () => {
-  if (!resend) {
-    resend = new Resend(process.env.RESEND_API_KEY)
+const getTransporter = () => {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      auth: {
+        user: process.env.BREVO_SMTP_USER,
+        pass: process.env.BREVO_SMTP_KEY
+      }
+    })
   }
-  return resend
+  return transporter
 }
 
 export const sendOtpEmail = async (to, otp) => {
-  await getResend().emails.send({
-    from: 'StockSense <onboarding@resend.dev>',
+  await getTransporter().sendMail({
+    from: '"StockSense" <anmoldua33763@gmail.com>',
     to,
     subject: 'Your StockSense verification code',
     html: `

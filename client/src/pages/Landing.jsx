@@ -49,7 +49,7 @@ export default function Landing() {
       </section>
 
       <footer style={s.footer}>
-        <p>Built by Anmol Dua · Not financial advice · For educational purposes</p>
+        <p>Built by Anmol Don · Not financial advice · For educational purposes</p>
       </footer>
     </div>
   )
